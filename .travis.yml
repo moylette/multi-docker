@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t moylette/react-test -f ./client/Dockerfile.dev ./client/
+  - docker build myotherproject
+
+script:
+  - docker run moylette/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t moylette/multi-client ./client
+  - docker build -t moylette/multi-nginx ./nginx
+  - docker build -t moylette/multi-server ./server
+  - docker build -t moylette/multi-worker ./worker
+#Login to dockerhub
+  - echo "$DOCKER_PASSWORD" | doccker login -u "$DOCKER_ID" --password-stdin
+#Push images to dockerhub
+  - docker push moylette/multi-client
+  - docker push moylette/multi-nginx
+  - docker push moylette/multi-server
+  - docker push moylette/multi-worker
