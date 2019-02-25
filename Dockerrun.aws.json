@@ -17,8 +17,8 @@
         },
         {
             "name": "worker",
-            "image": "moylette",
-            "hostname":  "moylette/multi-worker",
+            "image": "moylette/multi-worker",
+            "hostname":  "worker",
             "essential": false,
             "memory": 128
         },
